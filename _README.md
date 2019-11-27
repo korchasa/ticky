@@ -1,9 +1,7 @@
 # ticky
 Issue tracking in source code
 
-| todo | in-progress | done |
-|---|---|---|
-| [Должен генерироваться README.md](.issues/pre-commit-hook.md)<br/>| [Описать минимальный формат тикета](.issues/minimal-format.md)<br/>||
+[:ticky:]
 
 ## feats
 
@@ -17,4 +15,3 @@ Issue tracking in source code
 - https://github.com/dudarev/progressio
 - https://github.com/jwalanta/tit
 - https://github.com/driusan/bug
-
