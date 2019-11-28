@@ -17,4 +17,3 @@ Issue tracking in source code
 - https://github.com/dudarev/progressio
 - https://github.com/jwalanta/tit
 - https://github.com/driusan/bug
-

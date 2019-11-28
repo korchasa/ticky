@@ -40,8 +40,8 @@ func (i Issue) String() string {
 
 func main() {
 	conf := Config{
-		IssuesPath: "./.issues/*.md",
-		Statuses:   []string{"todo", "in-progress", "done"},
+		IssuesPath: fmt.Sprintf("%s/*.md", IssuesDir),
+		Statuses:   DefaultStatuses,
 	}
 	files, err := filepath.Glob(conf.IssuesPath)
 	if err != nil {
@@ -65,15 +65,17 @@ func main() {
 		panic(err)
 	}
 
-	tpl, err := ioutil.ReadFile("_README.md")
+	tpl, err := ioutil.ReadFile(ReadmeAltFile)
 	if err != nil {
 		panic(err)
 	}
 
 	readme := strings.Replace(string(tpl), "[:ticky:]", b, 1)
 
-
-	fmt.Println(readme)
+	err = ioutil.WriteFile(ReadmeFile, []byte(readme), 0644)
+	if err != nil {
+		panic(err)
+	}
 }
 
 func UnmarshalIssue(c string) (is Issue, err error) {
