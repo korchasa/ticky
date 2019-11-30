@@ -108,7 +108,7 @@ func BuildTable(iss []Issue, statuses []string) (s string, err error) {
 	t := template.Must(template.New("table").Parse(`
 |{{range .Statuses }} {{.}} |{{end}}
 |{{range .Statuses }} --- |{{end}}
-|{{range .Statuses }} {{range index $.Issues . }}[{{.Title}}]({{.File}}) {{range .Assignee}}[@{{.}}](https://github.com/{{.}}){{end}}<br/> {{end}}|{{end}}
+|{{range .Statuses }} {{range index $.Issues . }}[{{.Title}}]({{.File}}){{range .Assignee}} [[@{{.}}](https://github.com/{{.}})]{{end}}<br/> {{end}}|{{end}}
 `))
 	type data struct {
 		Issues map[string][]Issue

@@ -3,7 +3,7 @@ Issue tracking in source code
 
 | todo | in-progress |
 | --- | --- |
-| [Проверить на работу черз хук](.issues/todo/pre-commit-hook.md) [@korchasa](https://github.com/korchasa)<br/> | |
+| [Проверить на работу черз хук](.issues/todo/pre-commit-hook.md) [[@korchasa](https://github.com/korchasa)]<br/> | |
 
 ## feats
 
