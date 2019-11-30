@@ -19,11 +19,6 @@ var (
 	ReadmeAltFile = "_README.md"
 )
 
-type Config struct {
-	IssuesPath string
-	Statuses   []string
-}
-
 type Issue struct {
 	File string
 	Title string
