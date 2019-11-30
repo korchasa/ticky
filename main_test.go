@@ -14,7 +14,7 @@ func TestUnmarshalIssue(t *testing.T) {
 	}{
 		{
 			name: "positive",
-			content: `# Описать минимальный формат тикета @korchasa [in-progress]
+			content: `# Описать минимальный формат тикета @korchasa
 
 Надо:
 
@@ -28,7 +28,6 @@ func TestUnmarshalIssue(t *testing.T) {
 			want: Issue{
 				Title:    "Описать минимальный формат тикета",
 				Assignee: []string{"korchasa"},
-				Status:   "in-progress",
 				Text:     `Надо:
 
 - [x] определить список полей
@@ -54,7 +53,6 @@ func TestBuildTable(t *testing.T) {
 		name    string
 		iss      []Issue
 		wantS   string
-		wantErr error
 	}{
 		{
 			name: "simple",
@@ -63,28 +61,39 @@ func TestBuildTable(t *testing.T) {
 					Title:    "td2",
 					File: "./f1",
 					Status:   "todo",
+					Assignee: []string{"user1"},
 				},
 				{
 					Title:    "td1",
 					File: "./f2",
 					Status:   "todo",
+					Assignee: []string{"user2"},
 				},
 				{
 					Title:    "ip",
 					File: "./f3",
 					Status:   "in-progress",
+					Assignee: []string{"user3"},
+				},
+				{
+					Title:    "arch",
+					File: "./f4",
+					Status:   "archive",
+					Assignee: []string{"user4"},
 				},
 			},
 			wantS: `| todo | in-progress | done |
-|---|---|---|
-| [td1](./f2)<br/> [td2](./f1)<br/>| [ip](./f3)<br/>||`,
+| --- | --- | --- |
+| [td1](./f2) [@user2](https://github.com/user2)<br/> [td2](./f1) [@user1](https://github.com/user1)<br/> | [ip](./f3) [@user3](https://github.com/user3)<br/> | |`,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			gotS, err := BuildTable(tt.iss, statuses)
 			assert.Equal(t, tt.wantS, gotS)
-			assert.Equal(t, tt.wantErr, err)
+			if err != nil {
+				assert.Failf(t, "error on table build: %s", err.Error())
+			}
 		})
 	}
 }

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -8,12 +9,13 @@ import (
 	"regexp"
 	"sort"
 	"strings"
+	"text/template"
 )
 
 var (
-	IssuesDir = ".issues"
-	DefaultStatuses = []string{"todo", "in-progress", "done"}
-	ReadmeFile = "README.md"
+	IssuesDir     = ".issues"
+	ShowStatuses  = []string{"todo", "in-progress"}
+	ReadmeFile    = "README.md"
 	ReadmeAltFile = "_README.md"
 )
 
@@ -39,28 +41,27 @@ func (i Issue) String() string {
 }
 
 func main() {
-	conf := Config{
-		IssuesPath: fmt.Sprintf("%s/*.md", IssuesDir),
-		Statuses:   DefaultStatuses,
-	}
-	files, err := filepath.Glob(conf.IssuesPath)
-	if err != nil {
-		panic(err)
-	}
-	iss := make([]Issue, 0, len(files))
-	for _, f := range files {
-		b, err := ioutil.ReadFile(f)
+	iss := make([]Issue, 0, 10)
+	for _, status := range ShowStatuses {
+		files, err := filepath.Glob(fmt.Sprintf("%s/%s/*.md", IssuesDir, status))
 		if err != nil {
 			panic(err)
 		}
-		is, err := UnmarshalIssue(string(b))
-		if err != nil {
-			panic(err)
+		for _, f := range files {
+			b, err := ioutil.ReadFile(f)
+			if err != nil {
+				panic(err)
+			}
+			is, err := UnmarshalIssue(string(b))
+			if err != nil {
+				panic(err)
+			}
+			is.File = f
+			is.Status = status
+			iss = append(iss, is)
 		}
-		is.File = f
-		iss = append(iss, is)
 	}
-	b, err := BuildTable(iss, conf.Statuses)
+	b, err := BuildTable(iss, ShowStatuses)
 	if err != nil {
 		panic(err)
 	}
@@ -90,51 +91,39 @@ func UnmarshalIssue(c string) (is Issue, err error) {
 		ls[0] = strings.Replace(ls[0], match, "", 1)
 	}
 
-	re = regexp.MustCompile(`\[([^]]*)\]`)
-	statuses := re.FindAllString(ls[0], -1)
-	switch len(statuses) {
-	case 0:
-		return is, fmt.Errorf("can'r find any status in line: %s", ls[0])
-	case 1:
-		is.Status = statuses[0][1:len(statuses[0])-1]
-		ls[0] = strings.Replace(ls[0], statuses[0], "", 1)
-	default:
-		return is, fmt.Errorf("too many statuses in line: %s", ls[0])
-	}
-
 	is.Title = strings.Trim(ls[0], " #")
 	is.Text = strings.Trim(strings.Join(ls[1:], "\n"), "\n")
 	return
 }
 
 func BuildTable(iss []Issue, statuses []string) (s string, err error) {
-	isps := make(map[string][]Issue)
-
-	for _, status := range statuses {
-		isps[status] = make([]Issue, 0, 3)
-		s = fmt.Sprintf("%s| %s ", s, status)
-	}
-	s = fmt.Sprintf("%s|\n", s)
-
-	for i := 0; i < len(statuses); i++ {
-		s = fmt.Sprintf("%s|---", s)
-	}
-	s = fmt.Sprintf("%s|\n", s)
+	issuesMap := make(map[string][]Issue)
 
 	sort.Slice(iss, func(i, j int) bool {
 		return iss[i].Title < iss[j].Title
 	})
 
+	for _, status := range statuses {
+		issuesMap[status] = make([]Issue, 0, 3)
+	}
 	for _, is := range iss {
-		isps[is.Status] = append(isps[is.Status], is)
+		issuesMap[is.Status] = append(issuesMap[is.Status], is)
 	}
 
-	for _, status := range statuses {
-		s = fmt.Sprintf("%s|", s)
-		for _, is := range isps[status] {
-			s = fmt.Sprintf("%s [%s](%s)<br/>", s, is.Title, is.File)
-		}
+	t := template.Must(template.New("table").Parse(`
+|{{range .Statuses }} {{.}} |{{end}}
+|{{range .Statuses }} --- |{{end}}
+|{{range .Statuses }} {{range index $.Issues . }}[{{.Title}}]({{.File}}) {{range .Assignee}}[@{{.}}](https://github.com/{{.}}){{end}}<br/> {{end}}|{{end}}
+`))
+	type data struct {
+		Issues map[string][]Issue
+		Statuses []string
 	}
-	s = fmt.Sprintf("%s|", s)
-	return
+
+	buff := new(bytes.Buffer)
+	if err = t.Execute(buff, data{issuesMap, statuses}); err != nil {
+		return "", err
+	}
+
+	return strings.Trim(buff.String(), " \n"), nil
 }

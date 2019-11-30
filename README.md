@@ -1,9 +1,9 @@
 # ticky
 Issue tracking in source code
 
-| todo | in-progress | done |
-|---|---|---|
-| [Должен генерироваться README.md](.issues/pre-commit-hook.md)<br/>| [Описать минимальный формат тикета](.issues/minimal-format.md)<br/>||
+| todo | in-progress |
+| --- | --- |
+| [Проверить на работу черз хук](.issues/todo/pre-commit-hook.md) [@korchasa](https://github.com/korchasa)<br/> | |
 
 ## feats
 
