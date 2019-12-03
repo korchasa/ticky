@@ -1,17 +1,19 @@
 # ticky
-Issue tracking in source code
+Tiny issue tracking in source code
 
 [:ticky:]
 
-## feats
+## features
 
-- мониторинг одной страницей со столбцами по статусам
-    * где хранить очередность статустов (разумный дефолт + опция)    
-- тикет - валидный документ в GFMarkdown/adoc
-    * набор полей?
-
-## refs
-
-- https://github.com/dudarev/progressio
-- https://github.com/jwalanta/tit
-- https://github.com/driusan/bug
+ - markdown-based issues 
+ - `kanban board` in README.md (by pre-commit hook) 
+ - custom issue statuses support 
+ - cli tool with simple commands and autocomplete
+    * `new` issue
+    * `my` issues
+    * `list` issues
+        - `all` [default]      
+        - by `assignee` 
+        - by `status`
+    * `status` change     
+     
