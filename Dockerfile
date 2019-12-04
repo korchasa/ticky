@@ -12,4 +12,4 @@ FROM korchasa/go-app:0.0.1
 WORKDIR /app
 COPY --from=build /app/app ./app
 USER nobody:nobody
-CMD ./app
+ENTRYPOINT ./app
