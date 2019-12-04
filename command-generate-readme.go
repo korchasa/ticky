@@ -16,21 +16,21 @@ type GenerateReadmeCommand struct {
 	ReadmeTemplateFile string `long:"src" short:"s" description:"Template file" default:"_README.md"`
 }
 
-func (cmd *GenerateReadmeCommand) Execute(args []string) error {
+func (cmd *GenerateReadmeCommand) Execute(_ []string) error {
 	iss := make([]Issue, 0, 10)
 	for _, status := range Flags.Statuses {
 		files, err := filepath.Glob(fmt.Sprintf("%s/%s/*.md", Flags.IssuesDir, status))
 		if err != nil {
-			panic(err)
+			return err
 		}
 		for _, f := range files {
 			b, err := ioutil.ReadFile(f)
 			if err != nil {
-				panic(err)
+				return err
 			}
-			is, err := UnmarshalIssue(string(b))
-			if err != nil {
-				panic(err)
+			var is Issue
+			if err := is.UnmarshalYAML(b); err != nil {
+				return err
 			}
 			is.File = f
 			is.Status = status
