@@ -3,7 +3,7 @@ Tiny issue tracking in source code
 
 | todo | in-progress |
 | --- | --- |
-| [New task by cli command](issues/todo/cli-new-task.md)<br/> [Проверить на работу черз хук](issues/todo/pre-commit-hook.md) [[@korchasa](https://github.com/korchasa)]<br/> | |
+| [Нет команды для моего списка тикетов](issues/todo/Нет-команды-для-моего-списка-тикетов.md) [[@korchasa](https://github.com/korchasa)]<br/> | [Проверить на работу черз хук](issues/in-progress/pre-commit-hook.md) [[@korchasa](https://github.com/korchasa)]<br/> |
 
 ## features
 
