@@ -47,3 +47,4 @@ func (i *Issue) MarshalYAML() ([]byte, error) {
 	}
 	return []byte(fmt.Sprintf("# %s %s\n\n%s\n\n", i.Title, assignees, i.Text)), nil
 }
+

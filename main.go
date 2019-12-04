@@ -11,7 +11,7 @@ type FlagsSpec struct {
 	IssuesDir string `long:"issues-dir" short:"i" description:"Issues directory" default:"issues"`
 	ReadmeCmd GenerateReadmeCommand `command:"readme" description:"Generate README.md"`
 	NewCmd NewIssueCommand `command:"new" description:"Create new issue"`
-	MyCmd NewIssueCommand `command:"my" description:"Show my issues"`
+	MyCmd MyIssuesCommand `command:"my" description:"Show my issues"`
 }
 
 var Flags FlagsSpec

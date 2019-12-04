@@ -1,12 +1,8 @@
 package main
 
-type MyIssuesCommand struct {
-	Executed bool
-	EArgs    []string
-}
+type MyIssuesCommand struct {}
 
-func (c *MyIssuesCommand) Execute(args []string) error {
-	c.Executed = true
-	c.EArgs = args
+func (c *MyIssuesCommand) Execute(_ []string) error {
+
 	return nil
 }

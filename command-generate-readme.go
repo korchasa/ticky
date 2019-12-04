@@ -2,10 +2,8 @@ package main
 
 import (
 	"bytes"
-	"fmt"
 	"github.com/sirupsen/logrus"
 	"io/ioutil"
-	"path/filepath"
 	"sort"
 	"strings"
 	"text/template"
@@ -17,27 +15,12 @@ type GenerateReadmeCommand struct {
 }
 
 func (cmd *GenerateReadmeCommand) Execute(_ []string) error {
-	iss := make([]Issue, 0, 10)
-	for _, status := range Flags.Statuses {
-		files, err := filepath.Glob(fmt.Sprintf("%s/%s/*.md", Flags.IssuesDir, status))
-		if err != nil {
-			return err
-		}
-		for _, f := range files {
-			b, err := ioutil.ReadFile(f)
-			if err != nil {
-				return err
-			}
-			var is Issue
-			if err := is.UnmarshalYAML(b); err != nil {
-				return err
-			}
-			is.File = f
-			is.Status = status
-			iss = append(iss, is)
-		}
+	iss, err := readAllIssues()
+	if err != nil {
+		return err
 	}
 	logrus.Infof("Founded %d issues in directory `%s`", len(iss), Flags.IssuesDir)
+
 	b, err := BuildTable(iss, Flags.Statuses)
 	if err != nil {
 		return err

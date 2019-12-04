@@ -1,13 +1,10 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
 	"github.com/sirupsen/logrus"
 	"io/ioutil"
-	"os/exec"
 	"strings"
-	"syscall"
 )
 
 type NewIssueCommand struct {
@@ -39,25 +36,6 @@ func (c *NewIssueCommand) Execute(args []string) error {
 	logrus.WithField("path", path).Info("File saved")
 
 	return nil
-}
-
-func getUserFromGitConfig() (string, error) {
-	var stdout bytes.Buffer
-	cmd := exec.Command("git", []string{"config", "--get", "--null", "user.name"}...)
-	cmd.Stdout = &stdout
-	cmd.Stderr = ioutil.Discard
-
-	err := cmd.Run()
-	if exitError, ok := err.(*exec.ExitError); ok {
-		if waitStatus, ok := exitError.Sys().(syscall.WaitStatus); ok {
-			if waitStatus.ExitStatus() == 1 {
-				return "", fmt.Errorf("git config not found")
-			}
-		}
-		return "", err
-	}
-
-	return strings.TrimRight(stdout.String(), "\000"), nil
 }
 
 func buildIssuesPath(i Issue) string {

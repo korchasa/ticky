@@ -3,7 +3,7 @@ Tiny issue tracking in source code
 
 | todo | in-progress |
 | --- | --- |
-| [Нет команды для моего списка тикетов](issues/todo/Нет-команды-для-моего-списка-тикетов.md) [[@korchasa](https://github.com/korchasa)]<br/> | |
+| | [Нет команды для моего списка тикетов](issues/in-progress/Нет-команды-для-моего-списка-тикетов.md) [[@korchasa](https://github.com/korchasa)]<br/> |
 
 ## features
 
