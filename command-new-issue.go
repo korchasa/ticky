@@ -40,12 +40,12 @@ func (c *NewIssueCommand) Execute(args []string) error {
 
 func buildIssuesPath(i Issue) string {
 	file := i.Title
-	replace := "<>:\"/\\|?* "
+	replace := "<>:\"/\\|?*() "
 	for _, char := range replace {
 		file = strings.ReplaceAll(file, string(char), "-")
 	}
 	for strings.Contains(file, "--") {
 		file = strings.ReplaceAll(file, "--", "-")
 	}
-	return fmt.Sprintf("%s/%s/%s.md", Flags.IssuesDir, i.Status, file)
+	return fmt.Sprintf("%s/%s/%s.md", Flags.IssuesDir, i.Status, strings.Trim(file, "-"))
 }
