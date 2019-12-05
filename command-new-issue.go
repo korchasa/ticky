@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"github.com/sirupsen/logrus"
 	"io/ioutil"
+	"os"
+	"os/exec"
 	"strings"
 )
 
@@ -21,7 +23,7 @@ func (c *NewIssueCommand) Execute(args []string) error {
 		Assignee: []string{username},
 		Status:   Flags.Statuses[0],
 	}
-	logrus.WithFields(logrus.Fields{"title":i.Title,"assignee":i.Assignee[0],"status":i.Status}).Info("Issue created")
+	logrus.WithFields(logrus.Fields{"title": i.Title, "assignee": i.Assignee[0], "status": i.Status}).Info("Issue created")
 
 	cont, err := i.MarshalYAML()
 	if err != nil {
@@ -34,6 +36,14 @@ func (c *NewIssueCommand) Execute(args []string) error {
 		return err
 	}
 	logrus.WithField("path", path).Info("File saved")
+
+	editor := os.Getenv("EDITOR")
+	if editor != "" {
+		err = exec.Command(editor, path).Run()
+		if err != nil {
+			return fmt.Errorf("editor finished with error: %s", err)
+		}
+	}
 
 	return nil
 }
