@@ -51,10 +51,14 @@ func BuildTable(iss []Issue, statuses []string) (s string, err error) {
 		issuesMap[is.Status] = append(issuesMap[is.Status], is)
 	}
 
-	t := template.Must(template.New("table").Parse(`
-|{{range .Statuses }} {{.}} |{{end}}
+	funcMap := template.FuncMap{
+		"esc": func(t string) string { return strings.ReplaceAll(t, "|", "\\|") },
+	}
+
+	t := template.Must(template.New("table").Funcs(funcMap).Parse(`
+|{{range .Statuses }} {{. | esc }} |{{end}}
 |{{range .Statuses }} --- |{{end}}
-|{{range .Statuses }} {{range index $.Issues . }}[{{.Title}}]({{.File}}){{range .Assignee}} [[@{{.}}](https://github.com/{{.}})]{{end}}<br/> {{end}}|{{end}}
+|{{range .Statuses }} {{range index $.Issues . }}[{{.Title|esc}}]({{.File|esc}}){{range .Assignee}} [[@{{.|esc}}](https://github.com/{{.|esc}})]{{end}}<br/> {{end}}|{{end}}
 `))
 	type data struct {
 		Issues map[string][]Issue

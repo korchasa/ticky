@@ -59,7 +59,7 @@ func TestBuildTable(t *testing.T) {
 			name: "simple",
 			iss: []Issue{
 				{
-					Title:    "td2",
+					Title:    "td2|",
 					File: "./f1",
 					Status:   "todo",
 					Assignee: []string{"user1"},
@@ -85,7 +85,7 @@ func TestBuildTable(t *testing.T) {
 			},
 			wantS: `| todo | in-progress | done |
 | --- | --- | --- |
-| [td1](./f2) [[@user2](https://github.com/user2)]<br/> [td2](./f1) [[@user1](https://github.com/user1)]<br/> | [ip](./f3) [[@user3](https://github.com/user3)]<br/> | |`,
+| [td1](./f2) [[@user2](https://github.com/user2)]<br/> [td2\|](./f1) [[@user1](https://github.com/user1)]<br/> | [ip](./f3) [[@user3](https://github.com/user3)]<br/> | |`,
 		},
 	}
 	for _, tt := range tests {
