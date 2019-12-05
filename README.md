@@ -3,7 +3,7 @@ Tiny issue tracking in source code
 
 | todo | in-progress |
 | --- | --- |
-| - [cli command to list issues (all \| by assignee \| by status)](issues/todo/cli-command-to-list-issues-all-by-assignee-by-status.md) [[@korchasa](https://github.com/korchasa)]<br/> - [open issue file after creating](issues/todo/open-issue-file-after-creating.md) [[@korchasa](https://github.com/korchasa)]<br/> - [tag command](issues/todo/tag-command.md) [[@korchasa](https://github.com/korchasa)]<br/> - [verbose flag](issues/todo/verbose-flag.md) [[@korchasa](https://github.com/korchasa)]<br/> | |
+| - [cli command to list issues (all, by assignee, by status)](issues/todo/cli-command-to-list-issues-all-by-assignee-by-status.md) [[@korchasa](https://github.com/korchasa)]<br/> - [open issue file after creating](issues/todo/open-issue-file-after-creating.md) [[@korchasa](https://github.com/korchasa)]<br/> - [tag command](issues/todo/tag-command.md) [[@korchasa](https://github.com/korchasa)]<br/> - [verbose flag](issues/done/verbose-flag.md) [[@korchasa](https://github.com/korchasa)]<br/> | |
 
 ## features
 
