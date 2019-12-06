@@ -3,7 +3,7 @@ Tiny issue tracking in source code
 
 | todo | in-progress |
 | --- | --- |
-| - [tag command](issues/todo/tag-command.md) [[@korchasa](https://github.com/korchasa)]<br/> | |
+| - [tag command](issues/in-progress/tag-command.md) [[@korchasa](https://github.com/korchasa)]<br/> | |
 
 ## features
 
