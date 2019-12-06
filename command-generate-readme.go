@@ -15,7 +15,7 @@ type GenerateReadmeCommand struct {
 }
 
 func (cmd *GenerateReadmeCommand) Execute(_ []string) error {
-	iss, err := readAllIssues()
+	iss, err := readAllIssues(Issue{})
 	if err != nil {
 		return err
 	}

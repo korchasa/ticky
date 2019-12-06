@@ -15,6 +15,7 @@ var Flags struct {
 	ReadmeCmd   GenerateReadmeCommand `command:"readme" description:"Generate README.md"`
 	NewCmd      NewIssueCommand       `command:"new" description:"Create new issue"`
 	MyCmd       MyIssuesCommand       `command:"my" description:"Show my issues"`
+	ListCmd     ListIssuesCommand     `command:"list" description:"List issues" subcommands-optional:"true"`
 }
 
 func main() {

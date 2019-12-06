@@ -48,3 +48,23 @@ func (i *Issue) MarshalYAML() ([]byte, error) {
 	return []byte(fmt.Sprintf("# %s %s\n\n%s\n\n", i.Title, assignees, i.Text)), nil
 }
 
+func (i *Issue) Match(tpl Issue) bool {
+	if tpl.File != "" && tpl.File != i.File { return false }
+	if tpl.Title != "" && tpl.Title != i.Title { return false }
+	if tpl.Status != "" && tpl.Status != i.Status { return false }
+	if len(tpl.Assignee) > 0 {
+		founded := false
+		for _, ta := range tpl.Assignee {
+			for _, ia := range i.Assignee {
+				if ta == ia {
+					founded = true
+				}
+			}
+		}
+		if !founded {
+			return false
+		}
+	}
+	if tpl.Text != "" && tpl.Text != i.Text { return false }
+	return true
+}
