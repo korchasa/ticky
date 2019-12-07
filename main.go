@@ -10,7 +10,7 @@ import (
 type Opts struct {
 	Verbose     bool `long:"verbose" short:"v" description:"Verbose output"`
 	Statuses    []string
-	StatusesStr string `long:"statuses" default:"todo,in-progress"`
+	StatusesStr string `long:"statuses" description:"Comma separated statuses" default:"todo,in-progress"`
 	IssuesDir   string `long:"issues-dir" description:"Issues directory" default:"issues"`
 }
 
