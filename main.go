@@ -18,16 +18,18 @@ func main() {
 	log.SetLevel(log.WarnLevel)
 	var opts struct {
 		*Opts
-		ReadmeCmd GenerateReadmeCommand `command:"readme" description:"Generate README.md"`
+		InitCmd    InitCommand       `command:"init" description:"Init ticky"`
 		NewCmd    NewIssueCommand       `command:"new" description:"Create new issue"`
 		MyCmd     MyIssuesCommand       `command:"my" description:"Show my issues"`
 		ListCmd   ListIssuesCommand     `command:"list" description:"List issues"`
+		ReadmeCmd GenerateReadmeCommand `command:"readme" description:"Generate README.md"`
 	}
 	opts.Opts = &Opts{}
-	opts.ReadmeCmd.Opts = opts.Opts
+	opts.InitCmd.Opts = opts.Opts
 	opts.NewCmd.Opts = opts.Opts
 	opts.MyCmd.Opts = opts.Opts
 	opts.ListCmd.Opts = opts.Opts
+	opts.ReadmeCmd.Opts = opts.Opts
 
 	parser := flags.NewParser(&opts, flags.Default)
 	parser.ShortDescription = "Tiny issue tracking in source code"

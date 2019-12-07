@@ -11,7 +11,7 @@ import (
 
 type GenerateReadmeCommand struct {
 	*Opts
-	ReadmeFile string `long:"output" short:"o" description:"Output file" default:"README.md"`
+	ReadmeFile         string `long:"output" short:"o" description:"Output file" default:"README.md"`
 	ReadmeTemplateFile string `long:"src" short:"s" description:"Template file" default:"_README.md"`
 }
 
@@ -62,7 +62,7 @@ func BuildTable(iss []Issue, statuses []string) (s string, err error) {
 |{{range .Statuses }} {{range index $.Issues . }}- [{{.Title|esc}}]({{.File|esc}}){{range .Assignee}} [[@{{.|esc}}](https://github.com/{{.|esc}})]{{end}}<br/> {{end}}|{{end}}
 `))
 	type data struct {
-		Issues map[string][]Issue
+		Issues   map[string][]Issue
 		Statuses []string
 	}
 

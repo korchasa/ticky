@@ -6,7 +6,7 @@ import (
 
 type ListIssuesCommand struct {
 	*Opts
-	Assignee   string `long:"assignee" short:"a" description:"Filter by assignee"`
+	Assignee string `long:"assignee" short:"a" description:"Filter by assignee"`
 	Status   string `long:"status" short:"s" description:"Filter by status"`
 }
 
