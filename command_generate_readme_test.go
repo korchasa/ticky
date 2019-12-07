@@ -28,7 +28,7 @@ func TestUnmarshalIssue(t *testing.T) {
 			want: Issue{
 				Title:    "Описать минимальный формат тикета",
 				Assignee: []string{"korchasa"},
-				Text:     `Надо:
+				Text: `Надо:
 
 - [x] определить список полей
 - [x] описать их в md
@@ -51,34 +51,34 @@ func TestUnmarshalIssue(t *testing.T) {
 func TestBuildTable(t *testing.T) {
 	statuses := []string{"todo", "in-progress", "done"}
 	tests := []struct {
-		name    string
-		iss      []Issue
-		wantS   string
+		name  string
+		iss   []Issue
+		wantS string
 	}{
 		{
 			name: "simple",
 			iss: []Issue{
 				{
 					Title:    "td2|",
-					File: "./f1",
+					File:     "./f1",
 					Status:   "todo",
 					Assignee: []string{"user1"},
 				},
 				{
 					Title:    "td1",
-					File: "./f2",
+					File:     "./f2",
 					Status:   "todo",
 					Assignee: []string{"user2"},
 				},
 				{
 					Title:    "ip",
-					File: "./f3",
+					File:     "./f3",
 					Status:   "in-progress",
 					Assignee: []string{"user3"},
 				},
 				{
 					Title:    "arch",
-					File: "./f4",
+					File:     "./f4",
 					Status:   "archive",
 					Assignee: []string{"user4"},
 				},
