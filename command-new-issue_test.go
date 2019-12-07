@@ -37,8 +37,10 @@ func Test_buildIssuesPath(t *testing.T) {
 		},
 	}
 	for _, tt := range tests {
+		cmd := NewIssueCommand{}
+		cmd.Opts = &Opts{IssuesDir:"issues-test"}
 		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, tt.want, buildIssuesPath(tt.i))
+			assert.Equal(t, tt.want, cmd.buildIssuesPath(tt.i))
 		})
 	}
 }

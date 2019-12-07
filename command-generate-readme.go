@@ -10,31 +10,32 @@ import (
 )
 
 type GenerateReadmeCommand struct {
+	*Opts
 	ReadmeFile string `long:"output" short:"o" description:"Output file" default:"README.md"`
 	ReadmeTemplateFile string `long:"src" short:"s" description:"Template file" default:"_README.md"`
 }
 
-func (cmd *GenerateReadmeCommand) Execute(_ []string) error {
-	iss, err := readAllIssues(Issue{})
+func (c *GenerateReadmeCommand) Execute(_ []string) error {
+	iss, err := readAllIssues(Issue{}, c.Statuses, c.IssuesDir)
 	if err != nil {
 		return err
 	}
-	logrus.Infof("Founded %d issues in directory `%s`", len(iss), Flags.IssuesDir)
+	logrus.Infof("Founded %d issues in directory `%s`", len(iss), c.IssuesDir)
 
-	b, err := BuildTable(iss, Flags.Statuses)
+	b, err := BuildTable(iss, c.Statuses)
 	if err != nil {
 		return err
 	}
 
-	tpl, err := ioutil.ReadFile(cmd.ReadmeTemplateFile)
+	tpl, err := ioutil.ReadFile(c.ReadmeTemplateFile)
 	if err != nil {
 		return err
 	}
 
 	readme := strings.Replace(string(tpl), "[:ticky:]", b, 1)
 
-	logrus.Infof("Write %d bytes to `%s`", len(readme), cmd.ReadmeFile)
-	return ioutil.WriteFile(cmd.ReadmeFile, []byte(readme), 0644)
+	logrus.Infof("Write %d bytes to `%s`", len(readme), c.ReadmeFile)
+	return ioutil.WriteFile(c.ReadmeFile, []byte(readme), 0644)
 }
 
 func BuildTable(iss []Issue, statuses []string) (s string, err error) {

@@ -11,10 +11,10 @@ import (
 	"syscall"
 )
 
-func readAllIssues(tpl Issue) ([]Issue, error) {
+func readAllIssues(tpl Issue, statuses []string, issuesDir string) ([]Issue, error) {
 	iss := make([]Issue, 0, 10)
-	for _, status := range Flags.Statuses {
-		files, err := filepath.Glob(fmt.Sprintf("%s/%s/*.md", Flags.IssuesDir, status))
+	for _, status := range statuses {
+		files, err := filepath.Glob(fmt.Sprintf("%s/%s/*.md", issuesDir, status))
 		if err != nil {
 			return iss, err
 		}
@@ -73,9 +73,9 @@ func sortIssuesByStatusAndTitle(iss []Issue, statuses []string) {
 	})
 }
 
-func buildIssuesListText(iss []Issue) string {
+func buildIssuesListText(iss []Issue, statuses []string) string {
 	var buff []string
-	sortIssuesByStatusAndTitle(iss, Flags.Statuses)
+	sortIssuesByStatusAndTitle(iss, statuses)
 
 	maxTitle := 20
 	maxStatus := 0

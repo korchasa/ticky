@@ -1,6 +1,7 @@
 package main
 
 type MyIssuesCommand struct {
+	*Opts
 }
 
 func (c *MyIssuesCommand) Execute(a []string) error {
@@ -9,6 +10,6 @@ func (c *MyIssuesCommand) Execute(a []string) error {
 		return err
 	}
 
-	cmd := ListIssuesCommand{Assignee: user}
-	return cmd.Execute(a)
+	subcmd := ListIssuesCommand{Assignee: user}
+	return subcmd.Execute(a)
 }

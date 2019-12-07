@@ -7,28 +7,36 @@ import (
 	"strings"
 )
 
-var Flags struct {
+type Opts struct {
 	Verbose     bool `long:"verbose" short:"v" description:"Verbose output"`
 	Statuses    []string
-	StatusesStr string                `long:"statuses" short:"s" default:"todo,in-progress"`
-	IssuesDir   string                `long:"issues-dir" short:"i" description:"Issues directory" default:"issues"`
-	ReadmeCmd   GenerateReadmeCommand `command:"readme" description:"Generate README.md"`
-	NewCmd      NewIssueCommand       `command:"new" description:"Create new issue"`
-	MyCmd       MyIssuesCommand       `command:"my" description:"Show my issues"`
-	ListCmd     ListIssuesCommand     `command:"list" description:"List issues"`
-	TagCmd     NewTagCommand     `command:"tag" description:"List issues"`
+	StatusesStr string `long:"statuses" default:"todo,in-progress"`
+	IssuesDir   string `long:"issues-dir" description:"Issues directory" default:"issues"`
 }
 
 func main() {
 	log.SetLevel(log.WarnLevel)
-	parser := flags.NewParser(&Flags, flags.Default)
+	var opts struct {
+		*Opts
+		ReadmeCmd GenerateReadmeCommand `command:"readme" description:"Generate README.md"`
+		NewCmd    NewIssueCommand       `command:"new" description:"Create new issue"`
+		MyCmd     MyIssuesCommand       `command:"my" description:"Show my issues"`
+		ListCmd   ListIssuesCommand     `command:"list" description:"List issues"`
+	}
+	opts.Opts = &Opts{}
+	opts.ReadmeCmd.Opts = opts.Opts
+	opts.NewCmd.Opts = opts.Opts
+	opts.MyCmd.Opts = opts.Opts
+	opts.ListCmd.Opts = opts.Opts
+
+	parser := flags.NewParser(&opts, flags.Default)
 	parser.ShortDescription = "Tiny issue tracking in source code"
 	parser.CommandHandler = func(command flags.Commander, args []string) error {
-		if Flags.Verbose {
+		if opts.Verbose {
 			log.SetLevel(log.InfoLevel)
 		}
-		for _, st := range strings.Split(Flags.StatusesStr, ",") {
-			Flags.Statuses = append(Flags.Statuses, strings.Trim(st, " "))
+		for _, st := range strings.Split(opts.StatusesStr, ",") {
+			opts.Statuses = append(opts.Statuses, strings.Trim(st, " "))
 		}
 		return command.Execute(args)
 	}

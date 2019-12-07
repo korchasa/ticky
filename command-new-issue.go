@@ -10,6 +10,7 @@ import (
 )
 
 type NewIssueCommand struct {
+	*Opts
 }
 
 func (c *NewIssueCommand) Execute(args []string) error {
@@ -21,7 +22,7 @@ func (c *NewIssueCommand) Execute(args []string) error {
 	i := Issue{
 		Title:    strings.Join(args, " "),
 		Assignee: []string{username},
-		Status:   Flags.Statuses[0],
+		Status:   c.Statuses[0],
 	}
 	logrus.WithFields(logrus.Fields{"title": i.Title, "assignee": i.Assignee[0], "status": i.Status}).Info("Issue created")
 
@@ -31,7 +32,7 @@ func (c *NewIssueCommand) Execute(args []string) error {
 	}
 	logrus.WithField("symbols", len(cont)).Info("Content prepared")
 
-	path := buildIssuesPath(i)
+	path := c.buildIssuesPath(i)
 	if err = ioutil.WriteFile(path, cont, 0644); err != nil {
 		return err
 	}
@@ -48,7 +49,7 @@ func (c *NewIssueCommand) Execute(args []string) error {
 	return nil
 }
 
-func buildIssuesPath(i Issue) string {
+func (c *NewIssueCommand) buildIssuesPath(i Issue) string {
 	file := i.Title
 	replace := "<>:\"/\\|?*() "
 	for _, char := range replace {
@@ -57,5 +58,5 @@ func buildIssuesPath(i Issue) string {
 	for strings.Contains(file, "--") {
 		file = strings.ReplaceAll(file, "--", "-")
 	}
-	return fmt.Sprintf("%s/%s/%s.md", Flags.IssuesDir, i.Status, strings.Trim(file, "-"))
+	return fmt.Sprintf("%s/%s/%s.md", c.IssuesDir, i.Status, strings.Trim(file, "-"))
 }
